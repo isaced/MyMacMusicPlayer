@@ -1,4 +1,4 @@
-My Mac Music Player
+My Mac Music Player [![Build Status](https://travis-ci.org/isaced/MyMacMusicPlayer.svg?branch=master)](https://travis-ci.org/isaced/MyMacMusicPlayer)
 =========
 
 ---
