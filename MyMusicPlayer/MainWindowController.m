@@ -10,8 +10,11 @@
 #import <AVFoundation/AVFoundation.h>
 #import <AudioToolbox/AudioToolbox.h>
 #import "MusicTools.h"
+
 @interface MainWindowController ()
 
+@property (weak) IBOutlet NSImageView *backgroundImageView;
+@property (weak) IBOutlet NSSlider *progressSlider;
 
 @property (strong) AVAudioPlayer* player;
 @property (strong) NSMutableArray *musicArray;
@@ -34,9 +37,18 @@
 {
     [super windowDidLoad];
     
+    // Title Bar
+    self.window.titlebarAppearsTransparent = YES;
+    self.window.titleVisibility = NSWindowTitleHidden;
+    self.window.styleMask |= NSFullSizeContentViewWindowMask;
+    
+    // Window Style
+    NSColor *windowBackgroundColor = [NSColor colorWithRed:30/255.0 green:30/255.0 blue:30/255.0 alpha:1.0];
+    [self.window setBackgroundColor: windowBackgroundColor];
+    self.window.movableByWindowBackground = YES;
+    
     //init Array
     self.musicArray = [[NSMutableArray alloc] init];
-    
     
     //初始音量
     [self.player setVolume: 0.5];
