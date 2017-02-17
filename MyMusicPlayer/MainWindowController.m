@@ -11,7 +11,7 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import "MusicTools.h"
 
-@interface MainWindowController ()
+@interface MainWindowController () <NSDraggingDestination>
 
 @property (weak) IBOutlet NSImageView *backgroundImageView;
 @property (weak) IBOutlet NSSlider *progressSlider;
@@ -19,6 +19,7 @@
 @property (strong) AVAudioPlayer* player;
 @property (strong) NSMutableArray *musicArray;
 
+//@property (strong) filteringOptions;
 @end
 
 @implementation MainWindowController
@@ -47,6 +48,13 @@
     [self.window setBackgroundColor: windowBackgroundColor];
     self.window.movableByWindowBackground = YES;
     
+    // Drag and drop
+    [self.window registerForDraggedTypes:@[NSFilenamesPboardType]];
+    [self.backgroundImageView unregisterDraggedTypes];
+    
+//        [NSImage imageTypes]
+    //    @{NSPasteboardURLReadingContentsConformToTypesKey: }
+    
     //init Array
     self.musicArray = [[NSMutableArray alloc] init];
     
@@ -73,9 +81,9 @@
 
 //播放
 - (IBAction)playAction:(id)sender {
-    if (self.tableView.selectedRow != -1) {
+    if (self.musicArray.count > 0) {
         //初始化
-        NSDictionary *musicDic = self.musicArray[self.tableView.selectedRow];
+        NSDictionary *musicDic = self.musicArray.firstObject;
         NSData *musicData = [NSData dataWithContentsOfURL:[NSURL URLWithString:musicDic[@"url"]]];
         self.player = [[AVAudioPlayer alloc] initWithData:musicData error:nil ];
         [self.player play];
@@ -100,34 +108,29 @@
     NSArray *urlArray;
     
     //打开
-    if ( [openDlg runModal] == NSOKButton )
-    {
+    if ([openDlg runModal] == NSOKButton) {
         urlArray = [openDlg URLs];
     }
     
     //分析
     for (NSURL *url in urlArray) {
-        
-        //        NSLog( @"%@", url);
-        NSDictionary *ID3Dic = [MusicTools readMusicInfoForFile:url];
-        
-        
-        NSString *filename;
-        //URL编码的文件名
-        filename = [[[url absoluteString] lastPathComponent] stringByDeletingPathExtension];
-        //URL解码
-        filename = [filename stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        
-        NSString *name = filename;
-        NSString *time = ID3Dic[@"approximate duration in seconds"];
-        
-        NSDictionary *dic = @{@"name":name,@"time":time,@"url":[url absoluteString]};
-        
-        NSLog(@"%@",dic);
-        
+        NSDictionary *dic = [self openFile:url];
         [self.musicArray addObject:dic];
     }
+    
     [self.tableView reloadData];
+}
+
+- (NSDictionary *)openFile:(NSURL *)url {
+
+    NSDictionary *ID3Dic = [MusicTools readMusicInfoForFile:url];
+
+    NSString *name = ID3Dic[@"title"];
+    NSString *artist = ID3Dic[@"artist"];
+    NSString *time = ID3Dic[@"approximate duration in seconds"];
+
+    NSDictionary *dic = @{@"name":name,@"artist":artist,@"time":time,@"url":[url absoluteString]};
+    return dic;
 }
 
 //音量调节 - Slider
@@ -159,5 +162,43 @@
     return [self.musicArray count];
 }
 
+
+#pragma mark <NSDraggingDestination>
+
+- (BOOL)shouldAllowDrag:(id<NSDraggingInfo>)draggingInfo {
+    BOOL canAccept = NO;
+    NSPasteboard *pasteBoard = [draggingInfo draggingPasteboard];
+    if ([pasteBoard canReadObjectForClasses:@[[NSURL class]] options:nil]) {
+        canAccept = YES;
+    }
+    return canAccept;
+}
+
+-(NSDragOperation)draggingEntered:(id<NSDraggingInfo>)sender{
+    return NSDragOperationGeneric;
+}
+
+-(void)draggingExited:(id<NSDraggingInfo>)sender{
+
+}
+
+-(BOOL)prepareForDragOperation:(id<NSDraggingInfo>)sender{
+    return [self shouldAllowDrag:sender];
+}
+
+-(BOOL)performDragOperation:(id<NSDraggingInfo>)sender{
+    NSPasteboard *pasteBoard = [sender draggingPasteboard];
+    NSArray *urls = [pasteBoard readObjectsForClasses:@[[NSURL class]] options:nil];
+    NSLog(@"Drag and drop : %@",urls);
+    
+    NSURL *url = [urls firstObject];
+    if (url) {
+        NSDictionary *dic = [self openFile:url];
+        self.TitleTextField.stringValue = [NSString stringWithFormat:@"%@ - %@",dic[@"name"],dic[@"artist"]];
+        [self.musicArray addObject:dic];
+    }
+    
+    return YES;
+}
 
 @end
