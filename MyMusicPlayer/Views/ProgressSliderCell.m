@@ -30,7 +30,7 @@
     NSRect leftRect = rect;
     leftRect.size.width = finalWidth;
     
-    NSLog(@"- Current Rect:%@ \n- Value:%f \n- Final Width:%f", NSStringFromRect(rect), value, finalWidth);
+//    NSLog(@"- Current Rect:%@ \n- Value:%f \n- Final Width:%f", NSStringFromRect(rect), value, finalWidth);
     
     // Draw Left Part
     NSBezierPath* bg = [NSBezierPath bezierPathWithRoundedRect: rect xRadius: barRadius yRadius: barRadius];

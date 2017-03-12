@@ -99,6 +99,10 @@
         [self openMusicWithDialog];
     }
 }
+- (IBAction)progressSliderAction:(NSSlider *)sender {
+    NSTimeInterval time = self.progressSlider.doubleValue * self.player.duration;
+    self.player.currentTime = time;
+}
 
 
 - (void)openMusicWithDialog {
