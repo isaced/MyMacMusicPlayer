@@ -10,6 +10,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <AudioToolbox/AudioToolbox.h>
 #import "MusicTools.h"
+#import "Music.h"
 
 @interface MainWindowController () <NSDraggingDestination>
 
@@ -17,9 +18,8 @@
 @property (weak) IBOutlet NSSlider *progressSlider;
 
 @property (strong) AVAudioPlayer* player;
-@property (strong) NSMutableArray *musicArray;
+@property (strong) NSMutableArray<Music *> *musicList;
 
-//@property (strong) filteringOptions;
 @end
 
 @implementation MainWindowController
@@ -52,11 +52,8 @@
     [self.window registerForDraggedTypes:@[NSFilenamesPboardType]];
     [self.backgroundImageView unregisterDraggedTypes];
     
-//        [NSImage imageTypes]
-    //    @{NSPasteboardURLReadingContentsConformToTypesKey: }
-    
     //init Array
-    self.musicArray = [[NSMutableArray alloc] init];
+    self.musicList = [[NSMutableArray alloc] init];
     
     //初始音量
     [self.player setVolume: 0.5];
@@ -64,10 +61,19 @@
     //选择表格中第一行
     NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:0];
     [self.tableView selectRowIndexes:indexSet byExtendingSelection:NO];
-    
-
 }
 
+- (Music *)loadMusicWithFileURL:(NSURL *)url {
+    [self.player stop];
+    
+    // 从文件读取音频信息
+    Music *music = [[Music alloc] initWithFile:url];
+    
+    // 将音乐加载到 AVAudioPlayer
+    self.player = [[AVAudioPlayer alloc] initWithData:[music readData] error:nil];
+    
+    return music;
+}
 
 //上一首
 - (IBAction)previousAction:(id)sender {
@@ -79,16 +85,12 @@
     
 }
 
-//播放
+// 播放 & 暂停
 - (IBAction)playAction:(id)sender {
-    if (self.musicArray.count > 0) {
-        //初始化
-        NSDictionary *musicDic = self.musicArray.firstObject;
-        NSData *musicData = [NSData dataWithContentsOfURL:[NSURL URLWithString:musicDic[@"url"]]];
-        self.player = [[AVAudioPlayer alloc] initWithData:musicData error:nil ];
-        [self.player play];
+    if (self.player.playing) {
+        [self.player pause];
     }else{
-        NSLog(@"列表中没有歌曲！");
+        [self.player play];
     }
 }
 
@@ -114,23 +116,11 @@
     
     //分析
     for (NSURL *url in urlArray) {
-        NSDictionary *dic = [self openFile:url];
-        [self.musicArray addObject:dic];
+        Music *music = [[Music alloc] initWithFile:url];
+        [self.musicList addObject:music];
     }
     
     [self.tableView reloadData];
-}
-
-- (NSDictionary *)openFile:(NSURL *)url {
-
-    NSDictionary *ID3Dic = [MusicTools readMusicInfoForFile:url];
-
-    NSString *name = ID3Dic[@"title"];
-    NSString *artist = ID3Dic[@"artist"];
-    NSString *time = ID3Dic[@"approximate duration in seconds"];
-
-    NSDictionary *dic = @{@"name":name,@"artist":artist,@"time":time,@"url":[url absoluteString]};
-    return dic;
 }
 
 //音量调节 - Slider
@@ -144,14 +134,14 @@
     
     NSTableCellView *cellView = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
 
-    NSDictionary *musicDic = self.musicArray[row];
+    Music *music = self.musicList[row];
 
     if( [tableColumn.identifier isEqualToString:@"number"] ){
         cellView.textField.stringValue = [NSString stringWithFormat:@"%ld",row];
     }else if ([tableColumn.identifier isEqualToString:@"name"]){
-        cellView.textField.stringValue = musicDic[@"name"];
+        cellView.textField.stringValue = music.title;
     }else if ([tableColumn.identifier isEqualToString:@"time"]){
-        cellView.textField.stringValue = [NSString stringWithFormat:@"%d:%.2d",[musicDic[@"time"] intValue] / 60,[musicDic[@"time"] intValue] % 60];
+        cellView.textField.stringValue = [NSString stringWithFormat:@"%d:%.2d",(int)music.duration / 60, (int)music.duration % 60];
     }
     
     return cellView;
@@ -159,7 +149,7 @@
 
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
-    return [self.musicArray count];
+    return [self.musicList count];
 }
 
 
@@ -193,9 +183,9 @@
     
     NSURL *url = [urls firstObject];
     if (url) {
-        NSDictionary *dic = [self openFile:url];
-        self.TitleTextField.stringValue = [NSString stringWithFormat:@"%@ - %@",dic[@"name"],dic[@"artist"]];
-        [self.musicArray addObject:dic];
+        Music *music = [self loadMusicWithFileURL:url];
+        self.TitleTextField.stringValue = [NSString stringWithFormat:@"%@ - %@",music.title,music.artist];
+        [self.player play];
     }
     
     return YES;

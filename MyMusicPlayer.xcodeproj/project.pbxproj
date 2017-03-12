@@ -20,6 +20,7 @@
 		0D069272179BBA8D00D51C41 /* MainWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D069270179BBA8D00D51C41 /* MainWindowController.xib */; };
 		0D069278179BCDA700D51C41 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D069277179BCDA700D51C41 /* AudioToolbox.framework */; };
 		0D06927B179BCEA500D51C41 /* MusicTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D06927A179BCEA500D51C41 /* MusicTools.m */; };
+		0D2868B41E754E0500184E89 /* Music.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D2868B31E754E0500184E89 /* Music.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,8 @@
 		0D069277179BCDA700D51C41 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		0D069279179BCEA500D51C41 /* MusicTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicTools.h; sourceTree = "<group>"; };
 		0D06927A179BCEA500D51C41 /* MusicTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MusicTools.m; sourceTree = "<group>"; };
+		0D2868B21E754E0500184E89 /* Music.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Music.h; sourceTree = "<group>"; };
+		0D2868B31E754E0500184E89 /* Music.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Music.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +123,7 @@
 		0D06924E179BB87E00D51C41 /* MyMusicPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				0D2868B11E754DF600184E89 /* Models */,
 				0B5DA6961E554AAA009340E6 /* Views */,
 				0BFF8F671E54605D0072DB2A /* Resources */,
 				0D06925A179BB87E00D51C41 /* AppDelegate.h */,
@@ -145,6 +149,15 @@
 				0D069257179BB87E00D51C41 /* Credits.rtf */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0D2868B11E754DF600184E89 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				0D2868B21E754E0500184E89 /* Music.h */,
+				0D2868B31E754E0500184E89 /* Music.m */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -216,6 +229,7 @@
 				0D069255179BB87E00D51C41 /* main.m in Sources */,
 				0D06925C179BB87E00D51C41 /* AppDelegate.m in Sources */,
 				0B5DA6991E554AC0009340E6 /* ProgressSliderCell.m in Sources */,
+				0D2868B41E754E0500184E89 /* Music.m in Sources */,
 				0D069271179BBA8D00D51C41 /* MainWindowController.m in Sources */,
 				0D06927B179BCEA500D51C41 /* MusicTools.m in Sources */,
 			);
