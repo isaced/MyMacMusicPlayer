@@ -70,32 +70,36 @@
     Music *music = [[Music alloc] initWithFile:url];
     
     // 将音乐加载到 AVAudioPlayer
-    self.player = [[AVAudioPlayer alloc] initWithData:[music readData] error:nil];
+    self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:music.fileURL error:nil];
     
     return music;
 }
 
-//上一首
+// 上一首
 - (IBAction)previousAction:(id)sender {
 
 }
 
-//下一首
+// 下一首
 - (IBAction)nextAction:(id)sender {
     
 }
 
 // 播放 & 暂停
 - (IBAction)playAction:(id)sender {
-    if (self.player.playing) {
-        [self.player pause];
+    if (self.player.url) {
+        if (self.player.playing) {
+            [self.player pause];
+        }else{
+            [self.player play];
+        }
     }else{
-        [self.player play];
+        [self openMusicWithDialog];
     }
 }
 
 
-- (IBAction)addMusicToListAction:(id)sender {
+- (void)openMusicWithDialog {
     
     //初始化 NSOpenPanel
     NSOpenPanel* openDlg = [NSOpenPanel openPanel];
@@ -105,7 +109,7 @@
     [openDlg setCanChooseDirectories:NO];
     
     //允许多选
-    [openDlg setAllowsMultipleSelection:YES];
+    [openDlg setAllowsMultipleSelection:NO];
     
     NSArray *urlArray;
     
@@ -116,11 +120,10 @@
     
     //分析
     for (NSURL *url in urlArray) {
-        Music *music = [[Music alloc] initWithFile:url];
-        [self.musicList addObject:music];
+        [self loadMusicWithFileURL:url];
+        [self.player play];
+        return;
     }
-    
-    [self.tableView reloadData];
 }
 
 //音量调节 - Slider
