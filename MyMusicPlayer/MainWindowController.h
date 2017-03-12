@@ -10,16 +10,10 @@
 
 @interface MainWindowController : NSWindowController<NSTableViewDataSource>
 
-
-//---
-- (IBAction)addMusicToListAction:(id)sender;
 - (IBAction)previousAction:(id)sender;
 - (IBAction)nextAction:(id)sender;
 - (IBAction)playAction:(id)sender;
-- (IBAction)soundVolumeSliderChangeAction:(id)sender;
+
 @property (weak) IBOutlet NSTextField *TitleTextField;
-
-@property (weak) IBOutlet NSTableView *tableView;
-
 
 @end

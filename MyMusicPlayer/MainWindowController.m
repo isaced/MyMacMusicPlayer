@@ -9,7 +9,6 @@
 #import "MainWindowController.h"
 #import <AVFoundation/AVFoundation.h>
 #import <AudioToolbox/AudioToolbox.h>
-#import "MusicTools.h"
 #import "Music.h"
 
 @interface MainWindowController () <NSDraggingDestination>
@@ -57,10 +56,6 @@
     
     //初始音量
     [self.player setVolume: 0.5];
-    
-    //选择表格中第一行
-    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:0];
-    [self.tableView selectRowIndexes:indexSet byExtendingSelection:NO];
 }
 
 - (Music *)loadMusicWithFileURL:(NSURL *)url {
