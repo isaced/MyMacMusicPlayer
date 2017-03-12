@@ -61,7 +61,7 @@
                                     </button>
                                     <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="183">
                                         <rect key="frame" x="18" y="53" width="264" height="19"/>
-                                        <sliderCell key="cell" state="on" alignment="left" maxValue="1" doubleValue="0.5" tickMarkPosition="above" sliderType="linear" id="223" customClass="ProgressSliderCell"/>
+                                        <sliderCell key="cell" state="on" alignment="left" maxValue="1" tickMarkPosition="above" sliderType="linear" id="223" customClass="ProgressSliderCell"/>
                                     </slider>
                                     <button toolTip="下一首歌曲" translatesAutoresizingMaskIntoConstraints="NO" id="186">
                                         <rect key="frame" x="216" y="17" width="32" height="32"/>

@@ -16,6 +16,7 @@
 @property (weak) IBOutlet NSImageView *backgroundImageView;
 @property (weak) IBOutlet NSSlider *progressSlider;
 
+@property (strong) NSTimer *playingTimer;
 @property (strong) AVAudioPlayer* player;
 @property (strong) NSMutableArray<Music *> *musicList;
 
@@ -56,6 +57,8 @@
     
     //初始音量
     [self.player setVolume: 0.5];
+    
+    self.playingTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(playingTimerHandle:) userInfo:nil repeats:YES];
 }
 
 - (Music *)loadMusicWithFileURL:(NSURL *)url {
@@ -68,6 +71,10 @@
     self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:music.fileURL error:nil];
     
     return music;
+}
+
+- (void)playingTimerHandle:(NSTimer *)timer {
+    self.progressSlider.doubleValue = self.player.currentTime / self.player.duration;
 }
 
 // 上一首
