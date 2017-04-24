@@ -169,15 +169,6 @@
 
 #pragma mark <NSDraggingDestination>
 
-- (BOOL)shouldAllowDrag:(id<NSDraggingInfo>)draggingInfo {
-    BOOL canAccept = NO;
-    NSPasteboard *pasteBoard = [draggingInfo draggingPasteboard];
-    if ([pasteBoard canReadObjectForClasses:@[[NSURL class]] options:nil]) {
-        canAccept = YES;
-    }
-    return canAccept;
-}
-
 -(NSDragOperation)draggingEntered:(id<NSDraggingInfo>)sender{
     return NSDragOperationGeneric;
 }
@@ -187,7 +178,18 @@
 }
 
 -(BOOL)prepareForDragOperation:(id<NSDraggingInfo>)sender{
-    return [self shouldAllowDrag:sender];
+    BOOL canAccept = NO;
+    NSPasteboard *pasteBoard = [sender draggingPasteboard];
+    if ([pasteBoard canReadObjectForClasses:@[[NSURL class]] options:nil]) {
+        NSArray *urls = [pasteBoard readObjectsForClasses:@[[NSURL class]] options:nil];
+        for (NSURL *url in urls) {
+            if ([[url pathExtension] isEqualToString:@"mp3"]) { // type check
+                canAccept = YES;
+                break;
+            }
+        }
+    }
+    return canAccept;
 }
 
 -(BOOL)performDragOperation:(id<NSDraggingInfo>)sender{
@@ -196,7 +198,7 @@
     NSLog(@"Drag and drop : %@",urls);
     
     NSURL *url = [urls firstObject];
-    if (url) {
+    if ([[url pathExtension] isEqualToString:@"mp3"]) {
         Music *music = [self loadMusicWithFileURL:url];
         self.TitleTextField.stringValue = [NSString stringWithFormat:@"%@ - %@",music.title,music.artist];
         [self.player play];
