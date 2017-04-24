@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12120"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -10,6 +10,7 @@
             <connections>
                 <outlet property="TitleTextField" destination="swb-Bz-RuI" id="rHH-Tv-dAi"/>
                 <outlet property="backgroundImageView" destination="bha-n4-8Lt" id="dle-UM-lm7"/>
+                <outlet property="playButton" destination="184" id="hk9-eB-eem"/>
                 <outlet property="progressSlider" destination="183" id="euX-p7-EIb"/>
                 <outlet property="window" destination="1" id="qOr-47-huI"/>
             </connections>
@@ -20,7 +21,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="300" height="282"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
             <view key="contentView" id="2">
                 <rect key="frame" x="0.0" y="0.0" width="300" height="282"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -37,7 +38,7 @@
                                             <constraint firstAttribute="height" constant="32" id="Tbp-9X-Bph"/>
                                             <constraint firstAttribute="width" constant="32" id="p0Y-MF-vKR"/>
                                         </constraints>
-                                        <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="pause" imagePosition="only" alignment="center" state="on" inset="2" id="220">
+                                        <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="play" imagePosition="only" alignment="center" state="on" inset="2" id="220">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
@@ -147,7 +148,7 @@
     <resources>
         <image name="bg" width="1280" height="853"/>
         <image name="next" width="32" height="32"/>
-        <image name="pause" width="32" height="32"/>
+        <image name="play" width="32" height="32"/>
         <image name="prev" width="32" height="32"/>
     </resources>
 </document>

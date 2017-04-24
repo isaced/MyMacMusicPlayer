@@ -15,6 +15,7 @@
 
 @property (weak) IBOutlet NSImageView *backgroundImageView;
 @property (weak) IBOutlet NSSlider *progressSlider;
+@property (weak) IBOutlet NSButton *playButton;
 
 @property (strong) NSTimer *playingTimer;
 @property (strong) AVAudioPlayer* player;
@@ -52,13 +53,16 @@
     [self.window registerForDraggedTypes:@[NSFilenamesPboardType]];
     [self.backgroundImageView unregisterDraggedTypes];
     
-    //init Array
+    // init Array
     self.musicList = [[NSMutableArray alloc] init];
     
-    //初始音量
+    // default volume
     [self.player setVolume: 0.5];
     
     self.playingTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(playingTimerHandle:) userInfo:nil repeats:YES];
+    
+    // KVO AVAudioPlayer playing status
+    [self.player addObserver:self forKeyPath:@"playing" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
 }
 
 - (Music *)loadMusicWithFileURL:(NSURL *)url {
@@ -98,6 +102,8 @@
     }else{
         [self openMusicWithDialog];
     }
+    
+    [self.playButton setImage:[NSImage imageNamed:self.player.playing ? @"pause" : @"play"]];
 }
 - (IBAction)progressSliderAction:(NSSlider *)sender {
     NSTimeInterval time = self.progressSlider.doubleValue * self.player.duration;
@@ -160,7 +166,6 @@
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
     return [self.musicList count];
 }
-
 
 #pragma mark <NSDraggingDestination>
 
