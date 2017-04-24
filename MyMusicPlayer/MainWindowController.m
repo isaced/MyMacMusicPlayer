@@ -16,6 +16,7 @@
 @property (weak) IBOutlet NSImageView *backgroundImageView;
 @property (weak) IBOutlet NSSlider *progressSlider;
 @property (weak) IBOutlet NSButton *playButton;
+@property (weak) IBOutlet NSImageView *dragImageView;
 
 @property (strong) NSTimer *playingTimer;
 @property (strong) AVAudioPlayer* player;
@@ -170,11 +171,12 @@
 #pragma mark <NSDraggingDestination>
 
 -(NSDragOperation)draggingEntered:(id<NSDraggingInfo>)sender{
+    self.dragImageView.hidden = NO;
     return NSDragOperationGeneric;
 }
 
 -(void)draggingExited:(id<NSDraggingInfo>)sender{
-
+    self.dragImageView.hidden = YES;
 }
 
 -(BOOL)prepareForDragOperation:(id<NSDraggingInfo>)sender{
@@ -189,6 +191,8 @@
             }
         }
     }
+    
+    self.dragImageView.hidden = YES;
     return canAccept;
 }
 

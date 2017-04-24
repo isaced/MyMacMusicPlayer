@@ -10,6 +10,7 @@
             <connections>
                 <outlet property="TitleTextField" destination="swb-Bz-RuI" id="rHH-Tv-dAi"/>
                 <outlet property="backgroundImageView" destination="bha-n4-8Lt" id="dle-UM-lm7"/>
+                <outlet property="dragImageView" destination="fgh-c6-f0d" id="CW6-kA-qaf"/>
                 <outlet property="playButton" destination="184" id="hk9-eB-eem"/>
                 <outlet property="progressSlider" destination="183" id="euX-p7-EIb"/>
                 <outlet property="window" destination="1" id="qOr-47-huI"/>
@@ -112,6 +113,11 @@
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
+                                    <imageView hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fgh-c6-f0d">
+                                        <rect key="frame" x="268" y="170" width="32" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="drag" id="LSr-M7-1yq"/>
+                                    </imageView>
                                 </subviews>
                             </customView>
                         </subviews>
@@ -147,6 +153,7 @@
     </objects>
     <resources>
         <image name="bg" width="1280" height="853"/>
+        <image name="drag" width="32" height="32"/>
         <image name="next" width="32" height="32"/>
         <image name="play" width="32" height="32"/>
         <image name="prev" width="32" height="32"/>
